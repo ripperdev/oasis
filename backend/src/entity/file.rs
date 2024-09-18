@@ -1,6 +1,7 @@
 use anyhow::Result as AnyResult;
 use rocket::serde::Serialize;
 use std::path::PathBuf;
+use std::time::SystemTime;
 
 #[derive(Serialize)]
 #[serde(crate = "rocket::serde")]
@@ -10,6 +11,7 @@ pub struct File {
     pub file_type: FileType,
     pub size: u64,
     pub least_permission: i8,
+    pub mod_time: u64,
 }
 
 #[derive(Serialize, PartialEq)]
@@ -62,9 +64,9 @@ impl File {
         };
 
         let file_type = FileType::get_file_type(path);
-        let size = match (path.is_dir(), path.metadata()) {
-            (false, Ok(meta)) => meta.len(),
-            _ => 0,
+        let (size, mod_time) = match path.metadata() {
+            Ok(meta) => (meta.len(), meta.modified()?.duration_since(SystemTime::UNIX_EPOCH)?.as_secs()),
+            _ => (0, 0),
         };
 
         let dir = if need_dir {
@@ -80,6 +82,7 @@ impl File {
             file_type,
             size,
             least_permission,
+            mod_time,
         })
     }
 }

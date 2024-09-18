@@ -14,10 +14,7 @@ pub struct AppState {
 impl AppState {
     pub fn new(site_op: Option<Site>, pool: Pool<Sqlite>) -> Self {
         let first_run = site_op.is_none();
-        let site = match site_op {
-            Some(site) => site,
-            None => Site::default(),
-        };
+        let site = site_op.unwrap_or_else(|| Site::default());
 
         Self {
             first_run: AtomicBool::new(first_run),

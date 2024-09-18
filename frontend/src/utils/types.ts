@@ -55,6 +55,7 @@ export interface IFile {
   file_type: enums.EFileType;
   size: number;
   least_permission: number;
+  mod_time: number;
 }
 
 export interface IFileOrder {

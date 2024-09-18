@@ -96,7 +96,8 @@ async function finishUpload(task: IUploadTask) {
       file_type: inferFileType(task.file.name),
       size: task.file.size,
       filename: task.file.name,
-      least_permission: 0
+      least_permission: 0,
+      mod_time: task.file.lastModified,
     };
 
     pushFile(newFile);

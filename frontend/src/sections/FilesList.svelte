@@ -5,7 +5,7 @@
   import { EIconColor, EIconType } from "../utils/enums";
   import Icon from "../components/Icon.svelte";
   import FileIcon from "../components/FileIcon.svelte";
-  import { formatSize } from "../utils/util";
+  import {formatSize, formatTimestamp} from "../utils/util";
 
   export let page: "dir" | "search" = "dir";
   export let dirs: Array<string> = null;
@@ -126,6 +126,7 @@
         {$t("filetype." + file.file_type)}
       </div>
       <div class="px-2 my-auto">{formatSize(file.size)}</div>
+        <div class="px-2 my-auto">{formatTimestamp(file.mod_time)}</div>
     </div>
   {/each}
 {/if}
